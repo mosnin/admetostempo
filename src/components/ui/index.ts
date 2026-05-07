@@ -42,3 +42,7 @@ export { SuccessAnimation } from './SuccessAnimation'
 export { CommandPalette } from './CommandPalette'
 
 export { ThemeToggle } from './ThemeToggle'
+
+export { PulseRing } from './PulseRing'
+
+export { NumberRoll } from './NumberRoll'
