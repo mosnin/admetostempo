@@ -23,7 +23,7 @@ export function RequestForm({ defaultUsername = '', onSuccess }: RequestFormProp
   const [recipientInput, setRecipientInput] = useState(defaultUsername ? `@${defaultUsername}` : '')
   const [recipientProfile, setRecipientProfile] = useState<Profile | null>(null)
   const [amount, setAmount] = useState('')
-  const [currency, setCurrency] = useState('pathUSD')
+  const [currency, setCurrency] = useState<import('./StablecoinSelector').StablecoinSymbol>('pathUSD')
   const [memo, setMemo] = useState('')
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
@@ -132,7 +132,7 @@ export function RequestForm({ defaultUsername = '', onSuccess }: RequestFormProp
             <p className="font-semibold text-lavender-700">Requesting from <span className="text-lavender-900">{recipientProfile?.display_name || recipientProfile?.username}</span></p>
           </div>
           <div className="glass rounded-3xl p-8 flex flex-col items-center">
-            <AmountInput amount={amount} currency={currency} onChange={setAmount} onCurrencyChange={setCurrency} />
+            <AmountInput value={amount} coin={currency} onChange={setAmount} onCoinChange={setCurrency} />
           </div>
           <button
             disabled={!canProceedStep1}

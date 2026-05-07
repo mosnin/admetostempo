@@ -31,7 +31,7 @@ export function SendForm({ defaultUsername = '' }: SendFormProps) {
 
   // Amount
   const [amount, setAmount] = useState('')
-  const [currency, setCurrency] = useState('pathUSD')
+  const [currency, setCurrency] = useState<import('./StablecoinSelector').StablecoinSymbol>('pathUSD')
 
   // Memo
   const [memo, setMemo] = useState('')
@@ -152,7 +152,7 @@ export function SendForm({ defaultUsername = '' }: SendFormProps) {
             </div>
             <AmountPresets onSelect={setAmount} selected={amount} />
             <div className="glass rounded-3xl p-8 flex flex-col items-center">
-              <AmountInput amount={amount} currency={currency} onChange={setAmount} onCurrencyChange={setCurrency} />
+              <AmountInput value={amount} coin={currency} onChange={setAmount} onCoinChange={setCurrency} />
             </div>
             <button
               disabled={!canProceedStep1}

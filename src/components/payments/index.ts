@@ -1,4 +1,6 @@
 export { AmountInput } from './AmountInput'
+export { StablecoinSelector } from './StablecoinSelector'
+export type { StablecoinSymbol } from './StablecoinSelector'
 export { AmountPresets } from './AmountPresets'
 export { MemoSuggestions } from './MemoSuggestions'
 export { RecipientSearch } from './RecipientSearch'

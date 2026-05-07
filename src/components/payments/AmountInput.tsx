@@ -1,24 +1,17 @@
 'use client'
-import React, { useRef } from 'react'
-import { ChevronDown } from 'lucide-react'
-
-const STABLECOINS = [
-  { symbol: 'pathUSD', color: '#c4b5fd' },
-  { symbol: 'AlphaUSD', color: '#a7f3d0' },
-  { symbol: 'BetaUSD', color: '#fed7aa' },
-  { symbol: 'ThetaUSD', color: '#fda4af' },
-]
+import { StablecoinSelector, StablecoinSymbol } from './StablecoinSelector'
+import { cn } from '@/lib/utils'
 
 interface AmountInputProps {
-  amount: string
-  currency: string
-  onChange: (amount: string) => void
-  onCurrencyChange: (currency: string) => void
+  value: string
+  onChange: (v: string) => void
+  coin: StablecoinSymbol
+  onCoinChange: (coin: StablecoinSymbol) => void
+  error?: string
+  className?: string
 }
 
-export function AmountInput({ amount, currency, onChange, onCurrencyChange }: AmountInputProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-
+export function AmountInput({ value, onChange, coin, onCoinChange, error, className }: AmountInputProps) {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const raw = e.target.value.replace(/[^0-9.]/g, '')
     // Only allow one decimal point
@@ -30,42 +23,22 @@ export function AmountInput({ amount, currency, onChange, onCurrencyChange }: Am
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div
-        className="flex items-center gap-2 cursor-text"
-        onClick={() => inputRef.current?.focus()}
-      >
-        <span className="text-5xl font-bold text-lavender-800">$</span>
+    <div className={cn('space-y-1', className)}>
+      <div className="flex items-center gap-2 bg-white/80 border border-slate-200 rounded-2xl px-4 py-3 focus-within:ring-2 focus-within:ring-violet-300 focus-within:border-violet-300">
+        <span className="text-2xl font-black text-slate-400">$</span>
         <input
-          ref={inputRef}
-          type="text"
+          type="number"
           inputMode="decimal"
-          placeholder="0.00"
-          value={amount}
+          value={value}
           onChange={handleChange}
-          className="text-5xl font-bold text-lavender-800 bg-transparent border-none outline-none placeholder:text-lavender-300 w-40 text-center"
-          style={{ minWidth: '60px', width: `${Math.max(3, amount.length)}ch` }}
+          placeholder="0.00"
+          min="0"
+          step="0.01"
+          className="flex-1 text-3xl font-black text-slate-800 bg-transparent focus:outline-none placeholder-slate-200"
         />
+        <StablecoinSelector value={coin} onChange={onCoinChange} />
       </div>
-
-      {/* Currency picker */}
-      <div className="relative">
-        <select
-          value={currency}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onCurrencyChange(e.target.value)}
-          className="appearance-none pl-4 pr-8 py-2 rounded-full border border-lavender-200 bg-white/70 text-lavender-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-lavender-300 cursor-pointer"
-        >
-          {STABLECOINS.map((c) => (
-            <option key={c.symbol} value={c.symbol}>
-              {c.symbol}
-            </option>
-          ))}
-        </select>
-        <ChevronDown
-          size={14}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-lavender-500 pointer-events-none"
-        />
-      </div>
+      {error && <p className="text-xs text-rose-500 px-1">{error}</p>}
     </div>
   )
 }
