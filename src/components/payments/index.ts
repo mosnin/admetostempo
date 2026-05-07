@@ -1,0 +1,2 @@
+// Payment component exports
+export {}
