@@ -3,11 +3,6 @@ import { redirect } from 'next/navigation'
 import { TopNav } from '@/components/navigation/TopNav'
 import { FloatingDock } from '@/components/navigation/FloatingDock'
 
-export const metadata = {
-  title: 'Explore — Admetos',
-  description: 'Discover businesses and people on Admetos',
-}
-
 export default async function ExploreLayout({
   children,
 }: {
