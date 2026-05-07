@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'Profile — Admetos',
@@ -66,9 +67,9 @@ export default async function ProfilePage() {
         <h2 className="text-lg font-semibold text-gray-700 mb-3">Wallet</h2>
         <p className="text-sm text-gray-500 mb-2">Wallet Address</p>
         <p className="font-mono text-xs text-gray-600 break-all mb-3">0x0000...0000</p>
-        <a href="/wallet" className="text-lavender-500 text-sm font-medium hover:text-lavender-600">
+        <Link href="/wallet" className="text-lavender-500 text-sm font-medium hover:text-lavender-600">
           Manage wallet →
-        </a>
+        </Link>
       </div>
     </div>
   )

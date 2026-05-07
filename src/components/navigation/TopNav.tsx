@@ -8,6 +8,7 @@ import { Bell } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
 import { Avatar } from '@/components/ui/Avatar'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
 const NAV_LINKS = [
   { href: '/dashboard', label: 'Home' },
@@ -70,8 +71,12 @@ function TopNav({ unreadCount = 0 }: TopNavProps) {
           })}
         </nav>
 
-        {/* Right: Bell + Avatar */}
+        {/* Right: Language + Bell + Avatar */}
         <div className="flex items-center gap-3">
+          {/* Language switcher */}
+          <div className="hidden sm:block">
+            <LanguageSwitcher />
+          </div>
           {/* Notification bell */}
           <motion.button
             className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#f5f3ff] text-[#7c3aed] transition-colors hover:bg-[#ede9fe] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c4b5fd]"

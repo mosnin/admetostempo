@@ -1,5 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
 export const metadata = {
   title: 'Settings — Admetos',
@@ -31,6 +33,13 @@ export default async function SettingsPage() {
             </div>
             <span className="text-gray-400">→</span>
           </div>
+          <Link href="/settings/business" className="p-4 flex items-center justify-between hover:bg-lavender-50/50 transition-colors rounded-b-3xl">
+            <div>
+              <p className="font-medium text-gray-700">Business Account</p>
+              <p className="text-xs text-gray-400">Create or manage your business profile</p>
+            </div>
+            <span className="text-gray-400">→</span>
+          </Link>
         </div>
       </section>
 
@@ -60,9 +69,10 @@ export default async function SettingsPage() {
       <section className="mb-6">
         <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Preferences</h2>
         <div className="card-pastel rounded-3xl divide-y divide-lavender-100">
+          {/* Language — uses LanguageSwitcher client component */}
           <div className="p-4 flex items-center justify-between">
             <p className="font-medium text-gray-700">Language</p>
-            <span className="text-gray-500 text-sm">English</span>
+            <LanguageSwitcher />
           </div>
           <div className="p-4 flex items-center justify-between">
             <p className="font-medium text-gray-700">Default Currency</p>
