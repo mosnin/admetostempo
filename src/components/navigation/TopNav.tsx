@@ -4,14 +4,14 @@ import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Bell, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
 import { Avatar } from '@/components/ui/Avatar'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
-import { useNotifications } from '@/hooks/useNotifications'
 import { useCommandPalette } from '@/hooks/useCommandPalette'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { NotificationBell } from './NotificationBell'
 
 const NAV_LINKS = [
   { href: '/dashboard', label: 'Home' },
@@ -24,12 +24,9 @@ interface TopNavProps {
   unreadCount?: number
 }
 
-function TopNav({ unreadCount: unreadCountProp }: TopNavProps) {
+function TopNav({ unreadCount: _unreadCountProp }: TopNavProps) {
   const pathname = usePathname()
   const { user } = useUser()
-  const { unreadCount: liveUnreadCount } = useNotifications()
-  // Prefer live count from hook; fall back to prop if hook hasn't loaded yet
-  const unreadCount = liveUnreadCount > 0 ? liveUnreadCount : (unreadCountProp ?? 0)
   const { open: openPalette } = useCommandPalette()
 
   return (
@@ -98,29 +95,7 @@ function TopNav({ unreadCount: unreadCountProp }: TopNavProps) {
           {/* Theme toggle */}
           <ThemeToggle />
           {/* Notification bell */}
-          <motion.div
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.93 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-          >
-            <Link
-              href="/notifications"
-              className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#f5f3ff] text-[#7c3aed] transition-colors hover:bg-[#ede9fe] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c4b5fd]"
-              aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
-            >
-              <Bell size={18} />
-              {unreadCount > 0 && (
-                <motion.span
-                  className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#f43f5e] px-1 text-[10px] font-bold text-white"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 20 }}
-                >
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </motion.span>
-              )}
-            </Link>
-          </motion.div>
+          <NotificationBell />
 
           {/* Profile avatar */}
           <motion.div

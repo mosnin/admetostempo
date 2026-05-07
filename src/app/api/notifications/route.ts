@@ -12,49 +12,43 @@ export async function GET() {
 
   if (!profile) return NextResponse.json({ notifications: [] })
 
-  // Return recent transactions as notifications (since we may not have a dedicated notifications table yet)
+  // Derive notifications from recent transactions/requests
   const { data: received } = await supabase
     .from('transactions')
-    .select('*, from_profile:profiles!transactions_from_profile_id_fkey(username, display_name, avatar_url)')
+    .select('id, from_profile:profiles!from_profile_id(display_name, username), amount, currency, memo, created_at')
     .eq('to_profile_id', profile.id)
     .eq('status', 'confirmed')
     .order('created_at', { ascending: false })
-    .limit(20)
+    .limit(10)
 
   const { data: requests } = await supabase
     .from('payment_requests')
-    .select('*, from_profile:profiles!payment_requests_from_profile_id_fkey(username, display_name, avatar_url)')
+    .select('id, from_profile:profiles!from_profile_id(display_name, username), amount, memo, status, created_at')
     .eq('to_profile_id', profile.id)
     .eq('status', 'pending')
     .order('created_at', { ascending: false })
-    .limit(10)
+    .limit(5)
 
   const notifications = [
-    ...(received || []).map((tx: Record<string, unknown>) => ({
-      id: `tx-${tx.id}`,
-      type: 'payment_received',
-      title: 'Payment received',
-      message: `${(tx.from_profile as Record<string, unknown>)?.display_name || 'Someone'} sent you $${tx.amount}${tx.memo ? ` · ${tx.memo}` : ''}`,
-      avatar: (tx.from_profile as Record<string, unknown>)?.avatar_url,
-      username: (tx.from_profile as Record<string, unknown>)?.username,
-      amount: tx.amount,
+    ...(received || []).map((t: any) => ({
+      id: `tx-${t.id}`,
+      type: 'received' as const,
+      title: `${t.from_profile?.display_name || 'Someone'} sent you $${t.amount}`,
+      body: t.memo || `${t.amount} ${t.currency}`,
       read: false,
-      created_at: tx.created_at,
-      href: `/history`,
+      createdAt: t.created_at,
+      href: `/history/${t.from_profile?.username}`,
     })),
-    ...(requests || []).map((req: Record<string, unknown>) => ({
-      id: `req-${req.id}`,
-      type: 'payment_request',
-      title: 'Payment request',
-      message: `${(req.from_profile as Record<string, unknown>)?.display_name || 'Someone'} is requesting $${req.amount}${req.memo ? ` · ${req.memo}` : ''}`,
-      avatar: (req.from_profile as Record<string, unknown>)?.avatar_url,
-      username: (req.from_profile as Record<string, unknown>)?.username,
-      amount: req.amount,
+    ...(requests || []).map((r: any) => ({
+      id: `req-${r.id}`,
+      type: 'request' as const,
+      title: `${r.from_profile?.display_name || 'Someone'} requested $${r.amount}`,
+      body: r.memo || 'Payment request',
       read: false,
-      created_at: req.created_at,
+      createdAt: r.created_at,
       href: `/request`,
     })),
-  ].sort((a, b) => new Date(b.created_at as string).getTime() - new Date(a.created_at as string).getTime())
+  ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-  return NextResponse.json({ notifications, unreadCount: notifications.filter((n) => !n.read).length })
+  return NextResponse.json({ notifications })
 }
