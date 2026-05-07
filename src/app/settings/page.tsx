@@ -55,6 +55,20 @@ export default async function SettingsPage() {
             </div>
             <span className="text-gray-400">→</span>
           </div>
+          <Link href="/settings/security" className="p-4 flex items-center justify-between hover:bg-lavender-50/50 transition-colors">
+            <div>
+              <p className="font-medium text-gray-700">Security</p>
+              <p className="text-xs text-gray-400">2FA, sessions, scam protection</p>
+            </div>
+            <span className="text-gray-400">→</span>
+          </Link>
+          <Link href="/settings/api-keys" className="p-4 flex items-center justify-between hover:bg-lavender-50/50 transition-colors">
+            <div>
+              <p className="font-medium text-gray-700">API Keys</p>
+              <p className="text-xs text-gray-400">Machine-to-machine payment keys</p>
+            </div>
+            <span className="text-gray-400">→</span>
+          </Link>
           <Link href="/settings/business" className="p-4 flex items-center justify-between hover:bg-lavender-50/50 transition-colors rounded-b-3xl">
             <div>
               <p className="font-medium text-gray-700">Business Account</p>
@@ -69,21 +83,13 @@ export default async function SettingsPage() {
       <section className="mb-6">
         <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Notifications</h2>
         <div className="card-pastel rounded-3xl divide-y divide-lavender-100">
-          {[
-            { label: 'Payment Received', desc: 'When you receive a payment' },
-            { label: 'Payment Requests', desc: 'When someone requests money' },
-            { label: 'Request Paid', desc: 'When a request is fulfilled' },
-          ].map(({ label, desc }) => (
-            <div key={label} className="p-4 flex items-center justify-between">
-              <div>
-                <p className="font-medium text-gray-700">{label}</p>
-                <p className="text-xs text-gray-400">{desc}</p>
-              </div>
-              <div className="w-11 h-6 rounded-full bg-lavender-300 relative cursor-pointer">
-                <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white shadow" />
-              </div>
+          <Link href="/settings/notifications" className="p-4 flex items-center justify-between hover:bg-lavender-50/50 transition-colors rounded-3xl">
+            <div>
+              <p className="font-medium text-gray-700">Notification Preferences</p>
+              <p className="text-xs text-gray-400">Payments, requests, followers, sounds</p>
             </div>
-          ))}
+            <span className="text-gray-400">→</span>
+          </Link>
         </div>
       </section>
 
