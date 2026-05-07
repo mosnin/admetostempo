@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { RecipientSearch } from './RecipientSearch'
 import { AmountInput } from './AmountInput'
+import { AmountPresets } from './AmountPresets'
+import { MemoSuggestions } from './MemoSuggestions'
 import { ScamWarning } from './ScamWarning'
 import { SuccessAnimation } from '@/components/ui/SuccessAnimation'
 import type { Profile } from '@/types'
@@ -148,6 +150,7 @@ export function SendForm({ defaultUsername = '' }: SendFormProps) {
               </button>
               <h2 className="text-xl font-bold text-lavender-800">How much?</h2>
             </div>
+            <AmountPresets onSelect={setAmount} selected={amount} />
             <div className="glass rounded-3xl p-8 flex flex-col items-center">
               <AmountInput amount={amount} currency={currency} onChange={setAmount} onCurrencyChange={setCurrency} />
             </div>
@@ -178,6 +181,7 @@ export function SendForm({ defaultUsername = '' }: SendFormProps) {
               rows={3}
               className="w-full px-4 py-3 rounded-2xl border border-lavender-200 bg-white/70 focus:outline-none focus:ring-2 focus:ring-lavender-300 text-lavender-800 placeholder:text-lavender-300 resize-none"
             />
+            <MemoSuggestions onSelect={setMemo} />
             <p className="text-xs text-lavender-400">Memos are stored on-chain via TIP-20 and are publicly visible.</p>
             <button
               onClick={() => setStep(3)}

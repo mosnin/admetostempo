@@ -1,4 +1,6 @@
 export { AmountInput } from './AmountInput'
+export { AmountPresets } from './AmountPresets'
+export { MemoSuggestions } from './MemoSuggestions'
 export { RecipientSearch } from './RecipientSearch'
 export { ScamWarning } from './ScamWarning'
 export { TransactionItem } from './TransactionItem'
