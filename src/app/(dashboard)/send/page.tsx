@@ -1,12 +1,20 @@
 'use client'
-import { Suspense } from 'react'
+import { useState, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { useSearchParams } from 'next/navigation'
 import { SendForm } from '@/components/payments'
+import { QuickContacts } from '@/components/payments/QuickContacts'
 
 function SendPageInner() {
   const params = useSearchParams()
-  const defaultTo = params.get('to') || ''
+  const [defaultTo, setDefaultTo] = useState(params.get('to') || '')
+
+  function handleContactSelect(username: string) {
+    const url = new URL(window.location.href)
+    url.searchParams.set('to', username)
+    window.history.pushState({}, '', url)
+    setDefaultTo(username)
+  }
 
   return (
     <motion.div
@@ -20,8 +28,10 @@ function SendPageInner() {
         <p className="text-sm text-lavender-500 mt-0.5">Send stablecoins on Tempo Blockchain</p>
       </div>
 
+      <QuickContacts onSelect={handleContactSelect} />
+
       <div className="glass rounded-3xl p-6">
-        <SendForm defaultUsername={defaultTo} />
+        <SendForm key={defaultTo} defaultUsername={defaultTo} />
       </div>
     </motion.div>
   )
