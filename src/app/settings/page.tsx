@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { createClient } from '@/lib/supabase/server'
+import { ProfileSection } from '@/components/settings/ProfileSection'
 
 export const metadata = {
   title: 'Settings — Admetos',
@@ -12,9 +14,28 @@ export default async function SettingsPage() {
   const { userId } = await auth()
   if (!userId) redirect('/sign-in')
 
+  const supabase = await createClient()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('display_name, bio, username, avatar_url')
+    .eq('clerk_user_id', userId)
+    .single()
+
   return (
     <div className="p-6 max-w-lg mx-auto">
       <h1 className="text-3xl font-bold text-gradient mb-8">Settings</h1>
+
+      {/* Profile section */}
+      {profile && (
+        <ProfileSection
+          initialProfile={{
+            display_name: profile.display_name ?? '',
+            bio: profile.bio ?? null,
+            username: profile.username ?? '',
+            avatar_url: profile.avatar_url ?? null,
+          }}
+        />
+      )}
 
       {/* Account section */}
       <section className="mb-6">
