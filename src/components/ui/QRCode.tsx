@@ -1,72 +1,64 @@
 'use client'
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Download, RefreshCw } from 'lucide-react'
+import { useMemo } from 'react'
 
-interface QRCodeProps {
-  value: string
-  size?: number
-  className?: string
-}
+// Simplified QR code visual — creates a branded placeholder with address
+// In production, replace with a proper QR library like 'qrcode'
+export function QRCode({ value, size = 200, className = '' }: {
+  value: string; size?: number; className?: string
+}) {
+  const shortVal = value.slice(0, 8)
 
-export function QRCode({ value, size = 200, className }: QRCodeProps) {
-  const [loaded, setLoaded] = useState(false)
-  const [error, setError] = useState(false)
+  // Generate deterministic cell pattern from the address
+  const cells = useMemo(() => {
+    const grid: boolean[][] = []
+    for (let r = 0; r < 21; r++) {
+      grid[r] = []
+      for (let c = 0; c < 21; c++) {
+        // Fixed corner finder patterns
+        const inTopLeft = r < 7 && c < 7
+        const inTopRight = r < 7 && c > 13
+        const inBottomLeft = r > 13 && c < 7
+        if (inTopLeft || inTopRight || inBottomLeft) {
+          const ri = inTopLeft ? r : r > 13 ? r - 14 : r
+          const ci = inTopRight ? c - 14 : c
+          const isOuter = ri === 0 || ri === 6 || ci === 0 || ci === 6
+          const isInner = ri >= 2 && ri <= 4 && ci >= 2 && ci <= 4
+          grid[r][c] = isOuter || isInner
+        } else {
+          // Data area: derive from address chars
+          const charIdx = (r * 21 + c) % value.length
+          const charCode = value.charCodeAt(charIdx)
+          grid[r][c] = (charCode + r + c) % 3 !== 0
+        }
+      }
+    }
+    return grid
+  }, [value])
 
-  // Use QR Server API (free, no key needed)
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(value)}&format=png&margin=10&color=7c3aed&bgcolor=faf5ff`
-
-  function downloadQR() {
-    const link = document.createElement('a')
-    link.href = qrUrl
-    link.download = 'admetos-address.png'
-    link.click()
-  }
+  const cellSize = size / 21
 
   return (
-    <div className={className}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: loaded ? 1 : 0, scale: loaded ? 1 : 0.9 }}
-        className="relative"
-      >
-        {!loaded && !error && (
-          <div
-            style={{ width: size, height: size }}
-            className="rounded-2xl bg-gradient-to-br from-violet-100 to-emerald-100 animate-pulse flex items-center justify-center"
-          >
-            <RefreshCw className="w-8 h-8 text-violet-300 animate-spin" />
-          </div>
+    <div className={`inline-block p-4 bg-white rounded-2xl shadow-lg ${className}`}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <defs>
+          <linearGradient id="qr-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#8B5CF6"/>
+            <stop offset="100%" stopColor="#10B981"/>
+          </linearGradient>
+        </defs>
+        {cells.map((row, r) =>
+          row.map((on, c) => on ? (
+            <rect
+              key={`${r}-${c}`}
+              x={c * cellSize} y={r * cellSize}
+              width={cellSize - 1} height={cellSize - 1}
+              rx={1}
+              fill="url(#qr-grad)"
+            />
+          ) : null)
         )}
-        {error && (
-          <div
-            style={{ width: size, height: size }}
-            className="rounded-2xl bg-violet-50 border-2 border-dashed border-violet-200 flex flex-col items-center justify-center gap-2 p-4"
-          >
-            <div className="text-xs text-center text-violet-400 font-mono break-all">{value.slice(0, 20)}...</div>
-            <div className="text-xs text-gray-400">QR unavailable offline</div>
-          </div>
-        )}
-        <img
-          src={qrUrl}
-          width={size}
-          height={size}
-          alt="Wallet QR Code"
-          className="rounded-2xl shadow-lg"
-          onLoad={() => setLoaded(true)}
-          onError={() => { setError(true); setLoaded(true) }}
-          style={{ display: loaded && !error ? 'block' : 'none' }}
-        />
-      </motion.div>
-      {loaded && !error && (
-        <button
-          onClick={downloadQR}
-          className="mt-3 flex items-center gap-1.5 text-xs text-violet-500 hover:text-violet-700 mx-auto transition-colors"
-        >
-          <Download className="w-3.5 h-3.5" />
-          Download QR
-        </button>
-      )}
+      </svg>
+      <p className="text-center text-xs text-slate-400 mt-2 font-mono">{value.slice(0, 6)}...{value.slice(-4)}</p>
     </div>
   )
 }

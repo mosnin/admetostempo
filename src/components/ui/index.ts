@@ -32,6 +32,8 @@ export type { SelectProps, SelectOption } from './Select'
 export { QRCode } from './QRCode'
 export type { } from './QRCode'
 
+export { ShareButton } from './ShareButton'
+
 export { CopyButton } from './CopyButton'
 
 export { Confetti } from './Confetti'
