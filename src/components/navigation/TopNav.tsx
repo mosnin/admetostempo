@@ -4,11 +4,14 @@ import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Bell } from 'lucide-react'
+import { Bell, Search } from 'lucide-react'
 import { useUser } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
 import { Avatar } from '@/components/ui/Avatar'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { useNotifications } from '@/hooks/useNotifications'
+import { useCommandPalette } from '@/hooks/useCommandPalette'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 const NAV_LINKS = [
   { href: '/dashboard', label: 'Home' },
@@ -21,9 +24,13 @@ interface TopNavProps {
   unreadCount?: number
 }
 
-function TopNav({ unreadCount = 0 }: TopNavProps) {
+function TopNav({ unreadCount: unreadCountProp }: TopNavProps) {
   const pathname = usePathname()
   const { user } = useUser()
+  const { unreadCount: liveUnreadCount } = useNotifications()
+  // Prefer live count from hook; fall back to prop if hook hasn't loaded yet
+  const unreadCount = liveUnreadCount > 0 ? liveUnreadCount : (unreadCountProp ?? 0)
+  const { open: openPalette } = useCommandPalette()
 
   return (
     <motion.header
@@ -41,6 +48,17 @@ function TopNav({ unreadCount = 0 }: TopNavProps) {
         >
           <span className="text-gradient">admetos</span>
         </Link>
+
+        {/* Search pill — opens command palette */}
+        <button
+          onClick={openPalette}
+          className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/60 border border-gray-200/60 text-xs text-gray-400 hover:bg-white/80 hover:border-[#c4b5fd] hover:text-gray-600 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c4b5fd]"
+          aria-label="Open command palette"
+        >
+          <Search className="w-3 h-3" />
+          <span>Search…</span>
+          <kbd className="ml-1 px-1.5 py-0.5 text-[10px] bg-gray-100 rounded font-mono leading-none">⌘K</kbd>
+        </button>
 
         {/* Center Nav — desktop only */}
         <nav className="hidden md:flex items-center gap-1">
@@ -78,25 +96,29 @@ function TopNav({ unreadCount = 0 }: TopNavProps) {
             <LanguageSwitcher />
           </div>
           {/* Notification bell */}
-          <motion.button
-            className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#f5f3ff] text-[#7c3aed] transition-colors hover:bg-[#ede9fe] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c4b5fd]"
+          <motion.div
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.93 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
           >
-            <Bell size={18} />
-            {unreadCount > 0 && (
-              <motion.span
-                className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#f43f5e] px-1 text-[10px] font-bold text-white"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 20 }}
-              >
-                {unreadCount > 99 ? '99+' : unreadCount}
-              </motion.span>
-            )}
-          </motion.button>
+            <Link
+              href="/notifications"
+              className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#f5f3ff] text-[#7c3aed] transition-colors hover:bg-[#ede9fe] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c4b5fd]"
+              aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
+            >
+              <Bell size={18} />
+              {unreadCount > 0 && (
+                <motion.span
+                  className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#f43f5e] px-1 text-[10px] font-bold text-white"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                >
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </motion.span>
+              )}
+            </Link>
+          </motion.div>
 
           {/* Profile avatar */}
           <motion.div

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Home, ArrowUp, ArrowDown, Compass, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useNotifications } from '@/hooks/useNotifications'
 
 const DOCK_ITEMS = [
   { href: '/dashboard', icon: Home, label: 'Home', badgeKey: null },
@@ -17,6 +18,7 @@ const DOCK_ITEMS = [
 
 interface FloatingDockProps {
   pendingRequests?: number
+  unreadNotifications?: number
 }
 
 interface DockItemProps {
@@ -105,9 +107,11 @@ const floatVariants = {
 
 function FloatingDock({ pendingRequests = 0 }: FloatingDockProps) {
   const pathname = usePathname()
+  const { unreadCount } = useNotifications()
 
   const badges: Record<string, number> = {
     pendingRequests,
+    unreadNotifications: unreadCount,
   }
 
   return (
