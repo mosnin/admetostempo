@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X } from 'lucide-react'
+import { Search, X, Receipt } from 'lucide-react'
 import {
   isToday,
   isYesterday,
@@ -9,7 +9,7 @@ import {
   format,
 } from 'date-fns'
 import Link from 'next/link'
-import { TransactionItem } from '@/components/payments'
+import { TransactionItem, TransactionReceipt } from '@/components/payments'
 import type { Transaction } from '@/types'
 
 type FilterTab = 'all' | 'sent' | 'received' | 'requests'
@@ -47,6 +47,7 @@ export default function HistoryPage() {
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(0)
   const [loadingMore, setLoadingMore] = useState(false)
+  const [receiptTx, setReceiptTx] = useState<Transaction | null>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
   const fetchPage = useCallback(async (pageNum: number, tab: FilterTab, append: boolean) => {
@@ -202,8 +203,16 @@ export default function HistoryPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.03 }}
+                    className="relative group"
                   >
                     <TransactionItem tx={tx} showConversation />
+                    <button
+                      onClick={() => setReceiptTx(tx)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lavender-100 text-lavender-500 hover:bg-violet-100 hover:text-violet-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
+                      title="View receipt"
+                    >
+                      <Receipt size={14} />
+                    </button>
                   </motion.div>
                 ))}
               </motion.div>
@@ -219,6 +228,16 @@ export default function HistoryPage() {
           )}
         </div>
       )}
+
+      {/* Receipt modal */}
+      <AnimatePresence>
+        {receiptTx && (
+          <TransactionReceipt
+            transaction={receiptTx}
+            onClose={() => setReceiptTx(null)}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
