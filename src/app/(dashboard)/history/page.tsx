@@ -97,7 +97,7 @@ export default function HistoryPage() {
 
   // Client-side filter by search
   const filtered = search.trim()
-    ? transactions.filter((tx) => {
+    ? transactions.filter((tx: Transaction) => {
         const q = search.toLowerCase()
         return (
           tx.memo?.toLowerCase().includes(q) ||

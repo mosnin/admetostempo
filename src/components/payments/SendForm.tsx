@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight, CheckCircle, ExternalLink, Copy, Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -172,7 +172,7 @@ export function SendForm({ defaultUsername = '' }: SendFormProps) {
             </div>
             <textarea
               value={memo}
-              onChange={(e) => setMemo(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMemo(e.target.value)}
               placeholder="Coffee, rent, concert tickets... (optional)"
               rows={3}
               className="w-full px-4 py-3 rounded-2xl border border-lavender-200 bg-white/70 focus:outline-none focus:ring-2 focus:ring-lavender-300 text-lavender-800 placeholder:text-lavender-300 resize-none"

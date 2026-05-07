@@ -1,5 +1,5 @@
 'use client'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import { ChevronDown } from 'lucide-react'
 
 const STABLECOINS = [
@@ -52,7 +52,7 @@ export function AmountInput({ amount, currency, onChange, onCurrencyChange }: Am
       <div className="relative">
         <select
           value={currency}
-          onChange={(e) => onCurrencyChange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onCurrencyChange(e.target.value)}
           className="appearance-none pl-4 pr-8 py-2 rounded-full border border-lavender-200 bg-white/70 text-lavender-700 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-lavender-300 cursor-pointer"
         >
           {STABLECOINS.map((c) => (

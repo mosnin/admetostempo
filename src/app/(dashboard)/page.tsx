@@ -191,7 +191,7 @@ export default function DashboardPage() {
           </motion.div>
         ) : (
           <div className="space-y-2">
-            {transactions.map((tx, i) => (
+            {transactions.map((tx: Transaction, i: number) => (
               <TransactionFeedItem key={tx.id} tx={tx} index={i} />
             ))}
           </div>

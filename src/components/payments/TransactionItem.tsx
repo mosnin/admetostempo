@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, ExternalLink, Copy, ArrowUpRight, ArrowDownLeft } from 'lucide-react'
 import { formatDistanceToNow, format } from 'date-fns'
@@ -59,7 +59,7 @@ export function TransactionItem({ tx, currentUserId, showConversation = true }: 
       {/* Main row */}
       <div
         className="flex items-center gap-3 p-4 cursor-pointer hover:bg-white/40 transition-colors"
-        onClick={() => setExpanded((v) => !v)}
+        onClick={() => setExpanded((v: boolean) => !v)}
       >
         {/* Avatar */}
         <div
@@ -136,7 +136,7 @@ export function TransactionItem({ tx, currentUserId, showConversation = true }: 
                     target="_blank"
                     rel="noreferrer"
                     className="p-1 hover:text-lavender-700 text-lavender-400"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e: React.MouseEvent) => e.stopPropagation()}
                   >
                     <ExternalLink size={13} />
                   </a>

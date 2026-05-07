@@ -40,7 +40,7 @@ function PendingRequests() {
       })
       if (!res.ok) throw new Error('Failed to decline')
       toast.success('Request declined')
-      setRequests((prev) => prev.filter((r) => r.id !== id))
+      setRequests((prev: PaymentRequest[]) => prev.filter((r: PaymentRequest) => r.id !== id))
     } catch {
       toast.error('Could not decline request')
     }
@@ -75,7 +75,7 @@ function PendingRequests() {
   return (
     <div className="space-y-3">
       <AnimatePresence initial={false}>
-        {requests.map((req, i) => {
+        {requests.map((req: PaymentRequest, i: number) => {
           const requester = req.from_profile
           const name = requester?.display_name || requester?.username || 'Someone'
           const initials = name.slice(0, 2).toUpperCase()

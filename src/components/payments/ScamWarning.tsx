@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { AlertTriangle, ShieldAlert } from 'lucide-react'
 
@@ -47,7 +48,7 @@ export function ScamWarning({ address, confirmed, onConfirm }: ScamWarningProps)
             <input
               type="checkbox"
               checked={confirmed}
-              onChange={(e) => onConfirm(e.target.checked)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onConfirm(e.target.checked)}
               className="sr-only"
             />
             <div

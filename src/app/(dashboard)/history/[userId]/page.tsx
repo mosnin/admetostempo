@@ -111,7 +111,7 @@ export default function ConversationPage() {
           </div>
         ) : (
           <AnimatePresence initial={false}>
-            {messages.map((tx, i) => {
+            {messages.map((tx: ConversationTx, i: number) => {
               const isSent = tx.direction === 'sent'
               const showDateSep = i === 0 || !isSameDay(tx.created_at, messages[i - 1].created_at)
 

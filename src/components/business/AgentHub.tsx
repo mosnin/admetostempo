@@ -286,7 +286,13 @@ export function AgentHub() {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {CAPABILITIES.map((cap) => (
-            <CapabilityCard key={cap.title} {...cap} />
+            <CapabilityCard
+              key={cap.title}
+              icon={cap.icon}
+              title={cap.title}
+              description={cap.description}
+              available={cap.available}
+            />
           ))}
         </div>
       </motion.div>
