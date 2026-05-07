@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { TopNav } from '@/components/navigation/TopNav'
 import { FloatingDock } from '@/components/navigation/FloatingDock'
+import { CommandPalette } from '@/components/ui/CommandPalette'
 
 export default async function DashboardLayout({
   children,
@@ -23,6 +24,9 @@ export default async function DashboardLayout({
 
       {/* Floating bottom dock */}
       <FloatingDock />
+
+      {/* Global command palette — available on all dashboard pages */}
+      <CommandPalette />
     </div>
   )
 }

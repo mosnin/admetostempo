@@ -95,6 +95,8 @@ function TopNav({ unreadCount: unreadCountProp }: TopNavProps) {
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
+          {/* Theme toggle */}
+          <ThemeToggle />
           {/* Notification bell */}
           <motion.div
             whileHover={{ scale: 1.08 }}

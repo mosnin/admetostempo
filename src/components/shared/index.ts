@@ -7,3 +7,5 @@ export type { TransactionItemProps, TransactionStatus, TransactionDirection } fr
 
 export { EmptyState } from './EmptyState'
 export type { EmptyStateProps } from './EmptyState'
+
+export { Footer } from './Footer'
