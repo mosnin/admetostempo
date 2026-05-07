@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────
+   CSS Custom Properties — Pastel Design Tokens
+────────────────────────────────────────────── */
+:root {
+  /* Lavender (primary) */
+  --color-lavender-50:  #f5f3ff;
+  --color-lavender-100: #ede9fe;
+  --color-lavender-200: #ddd6fe;
+  --color-lavender-300: #c4b5fd;
+  --color-lavender-400: #a78bfa;
+  --color-lavender-500: #8b5cf6;
+  --color-lavender-600: #7c3aed;
+
+  /* Mint (secondary) */
+  --color-mint-50:  #ecfdf5;
+  --color-mint-100: #d1fae5;
+  --color-mint-200: #a7f3d0;
+  --color-mint-300: #6ee7b7;
+  --color-mint-400: #34d399;
+  --color-mint-500: #10b981;
+
+  /* Peach (accent) */
+  --color-peach-50:  #fff7ed;
+  --color-peach-100: #ffedd5;
+  --color-peach-200: #fed7aa;
+  --color-peach-300: #fdba74;
+  --color-peach-400: #fb923c;
+
+  /* Rose (error) */
+  --color-rose-100: #ffe4e6;
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+
+  /* Sky (info) */
+  --color-sky-100: #e0f2fe;
+  --color-sky-400: #38bdf8;
+  --color-sky-500: #0ea5e9;
+
+  /* Semantic */
+  --color-surface:  #faf9ff;
+  --color-muted:    #f3f0ff;
+  --color-border:   #e8e4fd;
+  --color-text:     #1e1b4b;
+  --color-text-muted: #6b7280;
+
+  /* Gradients */
+  --gradient-hero:     linear-gradient(135deg, #ede9fe 0%, #d1fae5 40%, #ffedd5 100%);
+  --gradient-pastel:   linear-gradient(135deg, #ede9fe 0%, #d1fae5 50%, #ffedd5 100%);
+  --gradient-lm:       linear-gradient(135deg, #c4b5fd 0%, #a7f3d0 100%);
+  --gradient-mp:       linear-gradient(135deg, #a7f3d0 0%, #fed7aa 100%);
+  --gradient-card:     linear-gradient(145deg, rgba(237,233,254,0.8) 0%, rgba(209,250,229,0.8) 100%);
+  --gradient-sidebar:  linear-gradient(180deg, #f5f3ff 0%, #ecfdf5 100%);
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(196,181,253,0.3);
+  --shadow-md:  0 4px 12px rgba(196,181,253,0.25);
+  --shadow-lg:  0 8px 24px rgba(196,181,253,0.2);
+  --shadow-xl:  0 16px 48px rgba(196,181,253,0.15);
+  --shadow-card: 0 2px 16px rgba(139,92,246,0.08), 0 1px 4px rgba(139,92,246,0.04);
+}
+
+/* ──────────────────────────────────────────────
+   Base Reset & Globals
+────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ──────────────────────────────────────────────
+   Custom Scrollbar
+────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-lavender-50);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-lavender-300);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lavender-400);
+}
+
+/* ──────────────────────────────────────────────
+   Focus Styles
+────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-lavender-400);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ──────────────────────────────────────────────
+   Utility Classes
+────────────────────────────────────────────── */
+
+/* Gradient backgrounds */
+.bg-gradient-hero    { background: var(--gradient-hero); }
+.bg-gradient-pastel  { background: var(--gradient-pastel); }
+.bg-gradient-lm      { background: var(--gradient-lm); }
+.bg-gradient-mp      { background: var(--gradient-mp); }
+.bg-gradient-card    { background: var(--gradient-card); }
+.bg-gradient-sidebar { background: var(--gradient-sidebar); }
+
+/* Glass morphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(196, 181, 253, 0.2);
+}
+.glass-dark {
+  background: rgba(196, 181, 253, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(196, 181, 253, 0.3);
+}
+
+/* Pastel card */
+.card-pastel {
+  background: var(--gradient-card);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+}
+
+/* Shimmer skeleton */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-lavender-100) 25%,
+    var(--color-lavender-50)  50%,
+    var(--color-lavender-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(20px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes bounceGentle {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-8px) rotate(1deg); }
+  66%       { transform: translateY(-4px) rotate(-1deg); }
+}
+
+.animate-fade-in        { animation: fadeIn 0.3s ease-in-out; }
+.animate-slide-up       { animation: slideUp 0.4s ease-out; }
+.animate-slide-in-right { animation: slideInRight 0.3s ease-out; }
+.animate-bounce-gentle  { animation: bounceGentle 2s ease-in-out infinite; }
+.animate-pulse-soft     { animation: pulseSoft 3s ease-in-out infinite; }
+.animate-float          { animation: float 6s ease-in-out infinite; }
+
+/* Typography */
+.text-gradient {
+  background: var(--gradient-lm);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-peach {
+  background: var(--gradient-mp);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dividers */
+.divider-pastel {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-lavender-200), transparent);
+}
+
+/* Button base resets */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* Input base */
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* Transaction status badges */
+.badge-confirmed {
+  background: var(--color-mint-100);
+  color: var(--color-mint-500);
+}
+.badge-pending {
+  background: var(--color-peach-100);
+  color: var(--color-peach-400);
+}
+.badge-failed {
+  background: var(--color-rose-100);
+  color: var(--color-rose-500);
+}
