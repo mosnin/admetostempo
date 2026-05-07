@@ -1,2 +1,6 @@
-// Payment component exports
-export {}
+export { AmountInput } from './AmountInput'
+export { RecipientSearch } from './RecipientSearch'
+export { ScamWarning } from './ScamWarning'
+export { TransactionItem } from './TransactionItem'
+export { SendForm } from './SendForm'
+export { RequestForm } from './RequestForm'
