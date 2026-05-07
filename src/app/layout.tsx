@@ -6,15 +6,33 @@ import { Providers } from '@/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Admetos — Pay with Style',
-  description: 'The next-generation payment platform built on Tempo blockchain',
-  keywords: ['payments', 'crypto', 'tempo blockchain', 'stablecoin', 'send money'],
+  title: { default: 'Admetos — Pay with Style', template: '%s | Admetos' },
+  description: 'The next-generation payment platform built on Tempo blockchain. Send stablecoins instantly with style.',
+  keywords: ['payments', 'stablecoins', 'crypto', 'Tempo', 'blockchain', 'Venmo'],
   authors: [{ name: 'Admetos' }],
+  creator: 'Admetos',
+  metadataBase: new URL('https://admetos.xyz'),
   openGraph: {
-    title: 'Admetos — Pay with Style',
-    description: 'The next-generation payment platform built on Tempo blockchain',
     type: 'website',
+    locale: 'en_US',
+    url: 'https://admetos.xyz',
+    title: 'Admetos — Pay with Style',
+    description: 'Stablecoin payments on Tempo blockchain',
+    siteName: 'Admetos',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Admetos — Pay with Style',
+    description: 'Stablecoin payments on Tempo blockchain',
+    creator: '@admetos',
+  },
+  manifest: '/manifest.json',
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Admetos' },
+  formatDetection: { telephone: false },
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#c4b5fd' },
+    { media: '(prefers-color-scheme: dark)', color: '#7c3aed' },
+  ],
 }
 
 export default function RootLayout({
