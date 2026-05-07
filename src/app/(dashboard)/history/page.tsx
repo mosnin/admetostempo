@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, X } from 'lucide-react'
 import {
@@ -62,7 +62,7 @@ export default function HistoryPage() {
       if (!res.ok) return
       const data = await res.json()
       const newTxs: Transaction[] = data.transactions || []
-      setTransactions((prev) => append ? [...prev, ...newTxs] : newTxs)
+      setTransactions((prev: Transaction[]) => append ? [...prev, ...newTxs] : newTxs)
       setHasMore(newTxs.length === PAGE_SIZE)
     } finally {
       setLoading(false)
@@ -149,7 +149,7 @@ export default function HistoryPage() {
           type="text"
           placeholder="Search by name, memo, or hash..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           className="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-lavender-200 bg-white/70 focus:outline-none focus:ring-2 focus:ring-lavender-300 text-sm text-lavender-800 placeholder:text-lavender-300"
         />
         {search && (
@@ -196,7 +196,7 @@ export default function HistoryPage() {
                 <p className="text-xs font-semibold text-lavender-400 uppercase tracking-wider px-1">
                   {label}
                 </p>
-                {groups[label].map((tx, i) => (
+                {groups[label].map((tx: Transaction, i: number) => (
                   <motion.div
                     key={tx.id}
                     initial={{ opacity: 0, y: 8 }}
