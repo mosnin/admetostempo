@@ -40,3 +40,5 @@ export type { } from './Confetti'
 export { SuccessAnimation } from './SuccessAnimation'
 
 export { CommandPalette } from './CommandPalette'
+
+export { ThemeToggle } from './ThemeToggle'

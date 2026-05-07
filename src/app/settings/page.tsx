@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export const metadata = {
   title: 'Settings — Admetos',
@@ -79,8 +80,11 @@ export default async function SettingsPage() {
             <span className="text-gray-500 text-sm">pathUSD</span>
           </div>
           <div className="p-4 flex items-center justify-between">
-            <p className="font-medium text-gray-700">Theme</p>
-            <span className="text-gray-500 text-sm">Light</span>
+            <div>
+              <p className="font-medium text-gray-700">Dark Mode</p>
+              <p className="text-xs text-gray-400">Switch between light and dark theme</p>
+            </div>
+            <ThemeToggle />
           </div>
         </div>
       </section>

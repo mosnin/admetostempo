@@ -5,6 +5,19 @@
    CSS Custom Properties — Pastel Design Tokens
 ────────────────────────────────────────────── */
 :root {
+  --bg-from: #ede9fe;
+  --bg-via: #d1fae5;
+  --bg-to: #ffedd5;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(255, 255, 255, 0.5);
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --nav-bg: rgba(255, 255, 255, 0.8);
+  --dock-bg: rgba(255, 255, 255, 0.9);
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --shadow-color: rgba(0, 0, 0, 0.05);
+
   /* Lavender (primary) */
   --color-lavender-50:  #f5f3ff;
   --color-lavender-100: #ede9fe;
@@ -62,6 +75,21 @@
   --shadow-card: 0 2px 16px rgba(139,92,246,0.08), 0 1px 4px rgba(139,92,246,0.04);
 }
 
+.dark {
+  --bg-from: #1e1b2e;
+  --bg-via: #0f1a1a;
+  --bg-to: #1a1208;
+  --card-bg: rgba(30, 27, 46, 0.8);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --nav-bg: rgba(20, 18, 30, 0.9);
+  --dock-bg: rgba(20, 18, 30, 0.95);
+  --input-bg: rgba(30, 27, 46, 0.8);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
 /* ──────────────────────────────────────────────
    Base Reset & Globals
 ────────────────────────────────────────────── */
@@ -81,8 +109,9 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: linear-gradient(135deg, var(--bg-from) 0%, var(--bg-via) 50%, var(--bg-to) 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
