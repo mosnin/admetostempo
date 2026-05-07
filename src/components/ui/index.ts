@@ -28,3 +28,15 @@ export type { SpinnerProps } from './Spinner'
 
 export { Select } from './Select'
 export type { SelectProps, SelectOption } from './Select'
+
+export { QRCode } from './QRCode'
+export type { } from './QRCode'
+
+export { CopyButton } from './CopyButton'
+
+export { Confetti } from './Confetti'
+export type { } from './Confetti'
+
+export { SuccessAnimation } from './SuccessAnimation'
+
+export { CommandPalette } from './CommandPalette'

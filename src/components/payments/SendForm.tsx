@@ -1,12 +1,13 @@
 'use client'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, ArrowRight, CheckCircle, ExternalLink, Copy, Send } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { RecipientSearch } from './RecipientSearch'
 import { AmountInput } from './AmountInput'
 import { ScamWarning } from './ScamWarning'
+import { SuccessAnimation } from '@/components/ui/SuccessAnimation'
 import type { Profile } from '@/types'
 
 const STEP_LABELS = ['Recipient', 'Amount', 'Memo', 'Confirm', 'Done']
@@ -87,8 +88,8 @@ export function SendForm({ defaultUsername = '' }: SendFormProps) {
     }
   }
 
-  function truncateHash(hash: string) {
-    return `${hash.slice(0, 10)}...${hash.slice(-8)}`
+  function formatAmount(amt: string) {
+    return `$${parseFloat(amt || '0').toFixed(2)} ${currency}`
   }
 
   const pageVariants = {
@@ -251,77 +252,14 @@ export function SendForm({ defaultUsername = '' }: SendFormProps) {
 
         {/* Step 4: Success */}
         {step === 4 && (
-          <motion.div
-            key="step4"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="space-y-6 text-center"
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', delay: 0.1 }}
-              className="w-20 h-20 rounded-full mx-auto flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #a7f3d0, #c4b5fd)' }}
-            >
-              <CheckCircle size={40} className="text-white" />
-            </motion.div>
-
-            <div>
-              <h2 className="text-2xl font-bold text-lavender-800">Payment sent!</h2>
-              <p className="text-lavender-500 mt-1">
-                ${parseFloat(amount).toFixed(2)} {currency} → {displayName()}
-              </p>
-            </div>
-
-            {txHash && (
-              <div className="glass rounded-2xl p-4 space-y-2">
-                <p className="text-xs text-lavender-400 font-medium">Transaction hash</p>
-                <div className="flex items-center gap-2">
-                  <p className="font-mono text-xs text-lavender-700 flex-1 truncate">{truncateHash(txHash)}</p>
-                  <button
-                    onClick={() => { navigator.clipboard.writeText(txHash); toast.success('Copied!') }}
-                    className="p-1.5 rounded-lg hover:bg-lavender-100 text-lavender-500"
-                  >
-                    <Copy size={14} />
-                  </button>
-                  <a
-                    href={`https://explorer.tempo.network/tx/${txHash}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-1.5 rounded-lg hover:bg-lavender-100 text-lavender-500"
-                  >
-                    <ExternalLink size={14} />
-                  </a>
-                </div>
-              </div>
-            )}
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => router.push('/')}
-                className="flex-1 py-3 rounded-2xl font-semibold text-lavender-700 bg-white/60 border border-lavender-200"
-              >
-                Home
-              </button>
-              <button
-                onClick={() => {
-                  setStep(0)
-                  setRecipientInput('')
-                  setRecipientProfile(null)
-                  setIsExternal(false)
-                  setExternalAddress('')
-                  setScamConfirmed(false)
-                  setAmount('')
-                  setMemo('')
-                  setTxHash(null)
-                }}
-                className="flex-1 py-3 rounded-2xl font-semibold text-white"
-                style={{ background: 'linear-gradient(135deg, #c4b5fd, #a7f3d0)' }}
-              >
-                Send again
-              </button>
-            </div>
+          <motion.div key="step4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <SuccessAnimation
+              show={step === 4}
+              amount={formatAmount(amount)}
+              recipient={recipientProfile?.username}
+              txHash={txHash ?? undefined}
+              onDone={() => router.push('/dashboard')}
+            />
           </motion.div>
         )}
       </AnimatePresence>
