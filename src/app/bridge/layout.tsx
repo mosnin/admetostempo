@@ -1,5 +1,28 @@
-import type { ReactNode } from 'react'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import { TopNav } from '@/components/navigation/TopNav'
+import { FloatingDock } from '@/components/navigation/FloatingDock'
 
-export default function BridgeLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>
+export const metadata = {
+  title: 'Bridge — Admetos',
+  description: 'Move stablecoins cross-chain via LayerZero or Relay',
+}
+
+export default async function BridgeLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const { userId } = await auth()
+  if (!userId) redirect('/sign-in')
+
+  return (
+    <div className="min-h-screen bg-gradient-pastel">
+      <TopNav />
+      <main className="max-w-2xl mx-auto px-4 pt-20 pb-32">
+        {children}
+      </main>
+      <FloatingDock />
+    </div>
+  )
 }
