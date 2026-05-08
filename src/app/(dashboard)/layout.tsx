@@ -3,6 +3,9 @@ import { redirect } from 'next/navigation'
 import { TopNav } from '@/components/navigation/TopNav'
 import { FloatingDock } from '@/components/navigation/FloatingDock'
 import { CommandPalette } from '@/components/ui/CommandPalette'
+import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts'
+import { ShortcutsModal } from '@/components/ui/ShortcutsModal'
+import { NetworkStatus } from '@/components/ui/NetworkStatus'
 
 export default async function DashboardLayout({
   children,
@@ -27,6 +30,9 @@ export default async function DashboardLayout({
 
       {/* Global command palette — available on all dashboard pages */}
       <CommandPalette />
+      <KeyboardShortcuts />
+      <ShortcutsModal />
+      <NetworkStatus />
     </div>
   )
 }
