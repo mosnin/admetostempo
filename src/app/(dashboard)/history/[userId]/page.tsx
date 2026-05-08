@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format, isToday, isYesterday } from 'date-fns'
 import type { Transaction } from '@/types'
+import { EmojiReactions } from '@/components/payments'
 
 interface ConversationTx extends Transaction {
   direction?: 'sent' | 'received'
@@ -30,6 +31,17 @@ export default function ConversationPage() {
   const [messages, setMessages] = useState<ConversationTx[]>([])
   const [otherUser, setOtherUser] = useState<{ username?: string; display_name?: string; avatar_url?: string | null } | null>(null)
   const [loading, setLoading] = useState(true)
+  const [reactions, setReactions] = useState<Record<string, Array<{emoji: string; count: number; reacted: boolean}>>>({})
+
+  function handleReact(emoji: string, messageId: string) {
+    // Optimistic update already handled inside EmojiReactions
+    // POST /api/payments/reactions in background
+    fetch('/api/payments/reactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ transaction_id: messageId, emoji })
+    }).catch(() => {})
+  }
 
   useEffect(() => {
     fetch(`/api/payments/conversation/${userId}`)
@@ -132,42 +144,49 @@ export default function ConversationPage() {
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ delay: i * 0.03 }}
-                    className={`flex ${isSent ? 'justify-end' : 'justify-start'} mb-2`}
+                    className={`flex flex-col ${isSent ? 'items-end' : 'items-start'} mb-2`}
                   >
-                    <div
-                      className={`max-w-[72%] rounded-3xl px-4 py-3 shadow-sm ${
-                        isSent
-                          ? 'rounded-br-lg text-white'
-                          : 'rounded-bl-lg bg-white/80 border border-lavender-200/40'
-                      }`}
-                      style={
-                        isSent
-                          ? { background: 'linear-gradient(135deg, #c4b5fd, #a7f3d0)' }
-                          : {}
-                      }
-                    >
-                      {/* Memo */}
-                      {tx.memo && (
-                        <p className={`text-sm mb-1.5 ${isSent ? 'text-white' : 'text-lavender-800'}`}>
-                          {tx.memo}
+                    <div className="group relative">
+                      <div
+                        className={`max-w-[72%] rounded-3xl px-4 py-3 shadow-sm ${
+                          isSent
+                            ? 'rounded-br-lg text-white'
+                            : 'rounded-bl-lg bg-white/80 border border-lavender-200/40'
+                        }`}
+                        style={
+                          isSent
+                            ? { background: 'linear-gradient(135deg, #c4b5fd, #a7f3d0)' }
+                            : {}
+                        }
+                      >
+                        {/* Memo */}
+                        {tx.memo && (
+                          <p className={`text-sm mb-1.5 ${isSent ? 'text-white' : 'text-lavender-800'}`}>
+                            {tx.memo}
+                          </p>
+                        )}
+
+                        {/* Amount */}
+                        <div className={`flex items-center gap-1.5 ${isSent ? 'text-white/90' : 'text-lavender-700'}`}>
+                          {isSent ? <ArrowUp size={13} /> : <ArrowDown size={13} />}
+                          <span className="font-bold text-sm">
+                            {isSent ? '-' : '+'}${Number(tx.amount).toFixed(2)}
+                          </span>
+                          <span className="text-xs opacity-70">{tx.currency}</span>
+                        </div>
+
+                        {/* Time */}
+                        <p className={`text-[10px] mt-1 ${isSent ? 'text-white/60' : 'text-lavender-400'}`}>
+                          {format(new Date(tx.created_at), 'h:mm a')}
+                          {tx.status === 'pending' && ' · pending'}
+                          {tx.status === 'failed' && ' · failed'}
                         </p>
-                      )}
-
-                      {/* Amount */}
-                      <div className={`flex items-center gap-1.5 ${isSent ? 'text-white/90' : 'text-lavender-700'}`}>
-                        {isSent ? <ArrowUp size={13} /> : <ArrowDown size={13} />}
-                        <span className="font-bold text-sm">
-                          {isSent ? '-' : '+'}${Number(tx.amount).toFixed(2)}
-                        </span>
-                        <span className="text-xs opacity-70">{tx.currency}</span>
                       </div>
-
-                      {/* Time */}
-                      <p className={`text-[10px] mt-1 ${isSent ? 'text-white/60' : 'text-lavender-400'}`}>
-                        {format(new Date(tx.created_at), 'h:mm a')}
-                        {tx.status === 'pending' && ' · pending'}
-                        {tx.status === 'failed' && ' · failed'}
-                      </p>
+                      <EmojiReactions
+                        messageId={tx.id}
+                        reactions={reactions[tx.id] || []}
+                        onReact={handleReact}
+                      />
                     </div>
                   </motion.div>
                 </div>
