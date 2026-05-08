@@ -6,14 +6,26 @@ import { Providers } from '@/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Admetos — Pay with Style',
-  description: 'The next-generation payment platform built on Tempo blockchain',
-  keywords: ['payments', 'crypto', 'tempo blockchain', 'stablecoin', 'send money'],
-  authors: [{ name: 'Admetos' }],
+  title: { default: 'Admetos', template: '%s | Admetos' },
+  description: 'Pay with style on the Tempo blockchain. Send, receive, and request stablecoin payments with memos.',
+  manifest: '/manifest.json',
+  themeColor: '#8B5CF6',
   openGraph: {
-    title: 'Admetos — Pay with Style',
-    description: 'The next-generation payment platform built on Tempo blockchain',
+    title: 'Admetos',
+    description: 'Pay with style on the Tempo blockchain',
+    images: [{ url: '/og-image.svg', width: 1200, height: 630 }],
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Admetos',
+    description: 'Pay with style on the Tempo blockchain',
+    images: ['/og-image.svg'],
+  },
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/logo.svg',
   },
 }
 

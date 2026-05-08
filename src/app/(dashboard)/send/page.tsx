@@ -1,0 +1,53 @@
+'use client'
+import { useState, Suspense } from 'react'
+import { motion } from 'framer-motion'
+import { useSearchParams } from 'next/navigation'
+import { SendForm } from '@/components/payments'
+import { QuickContacts } from '@/components/payments/QuickContacts'
+
+function SendPageInner() {
+  const params = useSearchParams()
+  const [defaultTo, setDefaultTo] = useState(params.get('to') || '')
+
+  function handleContactSelect(username: string) {
+    const url = new URL(window.location.href)
+    url.searchParams.set('to', username)
+    window.history.pushState({}, '', url)
+    setDefaultTo(username)
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6"
+    >
+      <div>
+        <h1 className="text-2xl font-bold text-lavender-800">Send</h1>
+        <p className="text-sm text-lavender-500 mt-0.5">Send stablecoins on Tempo Blockchain</p>
+      </div>
+
+      <QuickContacts onSelect={handleContactSelect} />
+
+      <div className="glass rounded-3xl p-6">
+        <SendForm key={defaultTo} defaultUsername={defaultTo} />
+      </div>
+    </motion.div>
+  )
+}
+
+export default function SendPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="space-y-4">
+          <div className="h-8 rounded-xl shimmer w-24" />
+          <div className="h-64 rounded-3xl shimmer" />
+        </div>
+      }
+    >
+      <SendPageInner />
+    </Suspense>
+  )
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /onboarding
+Sitemap: https://admetos.xyz/sitemap.xml

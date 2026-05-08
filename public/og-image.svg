@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ede9fe"/>
+      <stop offset="50%" stop-color="#d1fae5"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+    <linearGradient id="logo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Logo box -->
+  <rect x="480" y="140" width="240" height="240" rx="60" fill="url(#logo)"/>
+  <path d="M600 165L660 355H612L600 315L588 355H540L600 165Z" fill="white"/>
+  <!-- Title -->
+  <text x="600" y="435" font-family="system-ui, sans-serif" font-size="80" font-weight="800" fill="#1e1b4b" text-anchor="middle">admetos</text>
+  <!-- Tagline -->
+  <text x="600" y="500" font-family="system-ui, sans-serif" font-size="32" fill="#6b7280" text-anchor="middle">Pay with style on Tempo blockchain</text>
+</svg>
